@@ -14,22 +14,21 @@ class Appointment {
   });
 
   factory Appointment.fromMap(Map<dynamic, dynamic> map, String id) {
-    final startMilliseconds = map['start'] as int;
     return Appointment(
       id: id,
       doctorId: map['doctorId'] as String,
       patientId: map['patientId'] as String,
-      start: DateTime.fromMillisecondsSinceEpoch(startMilliseconds),
+      start: map['start'].toDate(),
       isApproved: map['isApproved'] as bool,
     );
   }
 
-  // Map<String, dynamic> toMap() {
-  //   return <String, dynamic>{
-  //     'jobId': jobId,
-  //     'start': start.millisecondsSinceEpoch,
-  //     'end': end.millisecondsSinceEpoch,
-  //     'comment': comment,
-  //   };
-  // }
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'doctorId': doctorId,
+      'patientId': patientId,
+      'start': start,
+      'isApproved': isApproved,
+    };
+  }
 }

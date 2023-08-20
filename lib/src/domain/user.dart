@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 enum UserRole { doctor, patient }
 
 class AppUser {
   final String? id;
+  final String name;
   final String email;
   final UserRole role;
   final List<DateTime>? timeSlots;
 
   AppUser({
     this.id,
+    required this.name,
     required this.email,
     required this.role,
     this.timeSlots,
@@ -24,17 +28,19 @@ class AppUser {
   factory AppUser.fromMap(Map<dynamic, dynamic> map, String id) {
     return AppUser(
       id: id,
+      name: map['name'],
       email: map['email'],
       role: UserRole.values.byName(map['role']),
       timeSlots: map['timeSlots'] is Iterable
-          ? map['timeSlots']
-              .map((value) => DateTime.fromMillisecondsSinceEpoch(value as int))
-          : null,
+          ? [for (Timestamp time in map['timeSlots']) time.toDate()]
+          // ? map['timeSlots'].map<DateTime>((value) => value.toDate()).toList()
+          : [],
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'name': name,
       'email': email,
       'role': role.name,
       if (timeSlots != null) 'timeSlots': timeSlots,

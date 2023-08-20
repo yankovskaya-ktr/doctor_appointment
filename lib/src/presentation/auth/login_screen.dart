@@ -1,17 +1,17 @@
-import 'package:doctor_appointment/src/features/doctor_flow/home_doctor/home_doctor.dart';
+import 'package:doctor_appointment/src/presentation/doctor_flow/home_doctor/home_doctor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../patient_flow/home_patient/home_patient_view.dart';
-import '../domain/user.dart';
-import 'app_user_controller.dart';
+import '../patient_flow/home_patient/home_patient_screen.dart';
+import '../../domain/user.dart';
+import 'auth_controller.dart';
 
-class LoginView extends ConsumerWidget {
+class LoginScreen extends ConsumerWidget {
   static const String routeName = 'login';
 
-  const LoginView({super.key});
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,9 +73,9 @@ class LoginView extends ConsumerWidget {
     final authController = ref.watch(authControllerProvider);
     authController.when(
         data: (appUser) => appUser!.role == UserRole.doctor
-            ? context.goNamed(HomeDoctor.routeName)
-            : context.goNamed(HomePatientView.routeName),
-        error: (_, __) => context.goNamed(LoginView.routeName),
+            ? context.goNamed(HomeDoctorScreen.routeName)
+            : context.goNamed(HomePatientScreen.routeName),
+        error: (_, __) => context.goNamed(LoginScreen.routeName),
         loading: () => const CircularProgressIndicator());
   }
 }

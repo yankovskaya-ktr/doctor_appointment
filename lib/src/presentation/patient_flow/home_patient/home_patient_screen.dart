@@ -1,13 +1,13 @@
-import 'package:doctor_appointment/src/components/home_header.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../components/home_header.dart';
+import '../appointments/appointmets_view.dart';
+import '../appointments/doctors_list_screen.dart';
 
-import '../../appointments/presentation/appointmets_view.dart';
-
-class HomePatientView extends StatelessWidget {
+class HomePatientScreen extends StatelessWidget {
   static const String routeName = 'homePatient';
 
-  const HomePatientView({super.key});
+  const HomePatientScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _NearestAppointments extends StatelessWidget {
         ));
 
     final addButton = TextButton.icon(
-        onPressed: () => context.pushNamed(AppointmentsView.routeName),
+        onPressed: () => context.pushNamed(DoctorsListScreen.routeName),
         label: const Text('New appointment'),
         icon: const Icon(
           Icons.add,

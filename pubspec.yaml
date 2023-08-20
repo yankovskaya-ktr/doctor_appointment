@@ -43,6 +43,8 @@ dependencies:
   flutter_login: ^4.1.1
   flutter_riverpod: ^2.3.7
   riverpod_lint: ^2.0.1
+  firebase_ui_firestore: ^1.5.8
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/auth_repo.dart';
-import '../data/user_repo.dart';
-import '../domain/user.dart';
+import '../../data/auth_repo.dart';
+import '../../data/user_repo.dart';
+import '../../domain/user.dart';
 
 class AuthController extends AsyncNotifier<AppUser?> {
   @override

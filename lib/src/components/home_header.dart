@@ -1,24 +1,21 @@
-import 'package:doctor_appointment/src/features/auth/presentation/app_user_controller.dart';
+import 'package:doctor_appointment/src/components/profile_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../presentation/auth/auth_controller.dart';
 
 class HomeHeader extends ConsumerWidget {
   const HomeHeader({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final image = ClipOval(
-        child: Container(
-            width: 60,
-            height: 60,
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('assets/images/avatar.jpg'),
-              fit: BoxFit.cover,
-            ))));
+    final user = ref.watch(authControllerProvider);
 
-    final username =
-        Text('John Doe', style: Theme.of(context).textTheme.headlineSmall);
+    String name = user.when(
+      data: (user) => user!.name,
+      error: (_, __) => '',
+      loading: () => '',
+    );
 
     final logOutButton = IconButton(
         onPressed: ref.read(authControllerProvider.notifier).signOut,
@@ -28,11 +25,7 @@ class HomeHeader extends ConsumerWidget {
       children: [
         const SizedBox(height: 30),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Row(children: [
-            image,
-            const SizedBox(width: 12),
-            username,
-          ]),
+          ProfileHeader(name: name),
           logOutButton,
         ]),
         const SizedBox(height: 24),

@@ -1,14 +1,16 @@
-import 'package:doctor_appointment/src/features/auth/domain/user.dart';
+import 'src/domain/user.dart';
+import 'src/presentation/patient_flow/appointments/appointmets_view.dart';
+import 'src/presentation/patient_flow/appointments/doctors_list_screen.dart';
+import 'src/presentation/patient_flow/appointments/make_appointment_screen.dart';
 
-import 'src/features/auth/presentation/app_user_controller.dart';
-import 'src/features/doctor_flow/home_doctor/home_doctor.dart';
+import 'src/presentation/auth/auth_controller.dart';
+import 'src/presentation/doctor_flow/home_doctor/home_doctor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'src/features/auth/presentation/login_view.dart';
-import 'src/features/appointments/presentation/appointmets_view.dart';
-import 'src/features/patient_flow/home_patient/home_patient_view.dart';
+import 'src/presentation/auth/login_screen.dart';
+import 'src/presentation/patient_flow/home_patient/home_patient_screen.dart';
 
 GoRouter _goRouter(ProviderRef<GoRouter> ref) {
   final authController = ref.watch(authControllerProvider);
@@ -19,26 +21,44 @@ GoRouter _goRouter(ProviderRef<GoRouter> ref) {
         return authController.when(
             data: (appUser) => appUser == null
                 ? '/login'
-                : appUser.role == UserRole.doctor
-                    ? '/homeDoctor'
-                    : '/homePatient',
-            error: (_, __) => '/login',
-            loading: () => '/login');
+                : state.matchedLocation.startsWith('/login')
+                    ? appUser.role == UserRole.doctor
+                        ? '/homeDoctor'
+                        : '/homePatient'
+                    : null,
+            error: (_, __) => null,
+            loading: () => null);
       },
       routes: [
         GoRoute(
-            name: LoginView.routeName,
+            name: LoginScreen.routeName,
             path: '/login',
             builder: (BuildContext context, GoRouterState state) {
-              return const LoginView();
+              return const LoginScreen();
             }),
         GoRoute(
-            name: HomePatientView.routeName,
+            name: HomePatientScreen.routeName,
             path: '/homePatient',
             builder: (BuildContext context, GoRouterState state) {
-              return const HomePatientView();
+              return const HomePatientScreen();
             },
             routes: [
+              GoRoute(
+                  name: DoctorsListScreen.routeName,
+                  path: 'doctors',
+                  builder: (BuildContext context, GoRouterState state) {
+                    return const DoctorsListScreen();
+                  },
+                  routes: [
+                    GoRoute(
+                        name: MakeAppointmentScreen.routeName,
+                        path: ':doctorId/makeAppointment',
+                        builder: (BuildContext context, GoRouterState state) {
+                          final doctorId = state.pathParameters['doctorId'];
+                          // final doctor = state.extra as AppUser;
+                          return MakeAppointmentScreen(doctorId!);
+                        })
+                  ]),
               GoRoute(
                   name: AppointmentsView.routeName,
                   path: 'appointments',
@@ -47,10 +67,10 @@ GoRouter _goRouter(ProviderRef<GoRouter> ref) {
                   })
             ]),
         GoRoute(
-            name: HomeDoctor.routeName,
+            name: HomeDoctorScreen.routeName,
             path: '/homeDoctor',
             builder: (BuildContext context, GoRouterState state) {
-              return const HomeDoctor();
+              return const HomeDoctorScreen();
             })
       ]);
 }

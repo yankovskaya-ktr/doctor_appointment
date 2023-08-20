@@ -34,12 +34,22 @@ class MyApp extends ConsumerWidget {
     final goRouter = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
-      routerConfig: goRouter,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-    );
+        routerConfig: goRouter,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+          appBarTheme: AppBarTheme(
+              centerTitle: true,
+              titleTextStyle: TextStyle(
+                  fontSize: 18,
+                  color: Theme.of(context)
+                      .primaryColorDark)), // Theme.of(context).textTheme.titleLarge),
+          textTheme: const TextTheme(
+            labelLarge: TextStyle(color: Colors.black54),
+            labelMedium: TextStyle(color: Colors.black54),
+            labelSmall: TextStyle(color: Colors.black54),
+          ),
+        ));
   }
 
   // This widget is the root of your application.

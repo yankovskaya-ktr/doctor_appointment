@@ -1,4 +1,4 @@
-import 'package:doctor_appointment/src/features/auth/data/user_repo.dart';
+import 'package:doctor_appointment/src/data/user_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
