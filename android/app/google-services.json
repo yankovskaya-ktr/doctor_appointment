@@ -29,6 +29,13 @@
             {
               "client_id": "735599738594-all98dql3qv013od7eufggrdv1mgc21s.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "735599738594-03sj6mer69k1ro03ugr4jqvrcj1e05nl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.doctorAppointment"
+              }
             }
           ]
         }
