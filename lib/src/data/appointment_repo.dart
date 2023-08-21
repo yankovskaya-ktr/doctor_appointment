@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment/src/data/auth_repo.dart';
 import 'package:doctor_appointment/src/domain/appointment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,9 +20,24 @@ class AppointmentRepository {
   Future<void> makeAppointment({required Appointment appointment}) =>
       _appointmentsRef.add(appointment);
 
-  // get all patient's appointments
+  Future<Appointment> getAppointment(String id) async {
+    final snapshot = await _appointmentsRef.doc(id).get();
+    return snapshot.data()!;
+  }
+
   Query<Appointment> queryAppointmentsForPatient(String patientId) =>
-      _appointmentsRef.where('patientId', isEqualTo: patientId);
+      _appointmentsRef
+          .where('patientId', isEqualTo: patientId)
+          .orderBy('start');
+
+  Future<void> deleteAppointment(String id) =>
+      _appointmentsRef.doc(id).delete();
+  // Future<List<Appointment>> queryAppointmentsForPatient(
+  //     String patientId) async {
+  //   final snapshots =
+  //       await _appointmentsRef.where('patientId', isEqualTo: patientId).get();
+  //   return snapshots.docs.map((doc) => doc.data()).toList();
+  // }
 
   // cancel appointment
 
@@ -32,3 +48,33 @@ final appointmentRepositoryProvider = Provider<AppointmentRepository>((ref) {
   final firestore = ref.watch(firestoreProvider);
   return AppointmentRepository(firestore);
 });
+
+final appointmentsForPatientQueryProvider =
+    Provider.autoDispose.family<Query<Appointment>, String>((ref, patientId) {
+  final appointmentRepo = ref.watch(appointmentRepositoryProvider);
+  return appointmentRepo.queryAppointmentsForPatient(patientId);
+});
+
+final appointmentProvider =
+    FutureProvider.autoDispose.family<Appointment, String>(
+  (ref, appointmentId) async {
+    final appointmentRepo = ref.watch(appointmentRepositoryProvider);
+    return appointmentRepo.getAppointment(appointmentId);
+  },
+);
+
+
+// final dailyAppointmentsForPatientProvider = Provider.autoDispose
+//     .family<List<DailyAppointments>, String>((ref, doctorId) {
+//   final appointmentRepo = ref.watch(appointmentRepositoryProvider);
+//   final currentUser = ref.watch(currentUserProvider).asData?.value;
+//   if (currentUser != null) {
+//     final appointments =
+//         appointmentRepo.queryAppointmentsForPatient(currentUser.id!);
+//   }
+//   final doctor = ref.watch(doctorProvider(doctorId));
+//   if (doctor.asData != null) {
+//     return DailyAppointments.getAll(doctor.asData!.value.timeSlots!);
+//   }
+//   return [];
+// });

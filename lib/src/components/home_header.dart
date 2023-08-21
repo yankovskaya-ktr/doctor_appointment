@@ -24,7 +24,7 @@ class HomeHeader extends ConsumerWidget {
 
     return Column(
       children: [
-        const SizedBox(height: 30),
+        SizedBox(height: MediaQuery.of(context).viewPadding.top + 12),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           UserInfo(name: name),
           signOutButton,

@@ -37,7 +37,7 @@ final doctorRepositoryProvider = Provider<DoctorRepository>((ref) {
   return DoctorRepository(firestore);
 });
 
-final allDoctorsQueryProvider = Provider.autoDispose((ref) {
+final allDoctorsQueryProvider = Provider.autoDispose<Query<AppUser>>((ref) {
   final doctorRepo = ref.watch(doctorRepositoryProvider);
   return doctorRepo.queryAllDoctors();
 });

@@ -5,15 +5,17 @@ class DailyTimeSlots {
 
   DailyTimeSlots({required this.day, required this.slots});
 
-  /// Creates a list of DaylyTimeSlots from a list of timeslots
+  /// Creates a sorted list of DaylyTimeSlots from a list of timeslots
   static List<DailyTimeSlots> getAll(List<DateTime> slots) {
     final byDate = _slotsByDate(slots);
     final List<DailyTimeSlots> list = [];
     for (final pair in byDate.entries) {
       final date = pair.key;
       final entriesByDate = pair.value;
+      entriesByDate.sort();
       list.add(DailyTimeSlots(day: date, slots: entriesByDate));
     }
+    list.sort((a, b) => a.day.compareTo(b.day));
     return list;
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../components/home_header.dart';
-import '../appointments/appointmets_view.dart';
 import '../appointments/doctors_list_screen.dart';
+import 'appointments_list.dart';
 
 class HomePatientScreen extends StatelessWidget {
   static const String routeName = 'homePatient';
@@ -12,56 +12,38 @@ class HomePatientScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-            padding: const EdgeInsets.all(12),
-            child: Column(children: _renderBody(context))));
-  }
-
-  List<Widget> _renderBody(BuildContext context) {
-    return [
-      const HomeHeader(),
-      const _NearestAppointments(),
-    ];
+        body: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: const Column(children: [
+              HomeHeader(),
+              Expanded(child: _ScheduledAppointments()),
+            ])));
   }
 }
 
-class _NearestAppointments extends StatelessWidget {
-  const _NearestAppointments();
+class _ScheduledAppointments extends StatelessWidget {
+  const _ScheduledAppointments();
 
   @override
   Widget build(BuildContext context) {
-    final title = Text('Nearest Appointments',
-        style: Theme.of(context).textTheme.titleLarge);
-
-    final allButton = TextButton.icon(
-        onPressed: () => context.pushNamed(AppointmentsView.routeName),
-        label: const Text('View all'),
-        icon: const Icon(
-          Icons.view_agenda_outlined,
-        ));
+    final title =
+        Text('My Appointments', style: Theme.of(context).textTheme.titleLarge);
 
     final addButton = TextButton.icon(
         onPressed: () => context.pushNamed(DoctorsListScreen.routeName),
-        label: const Text('New appointment'),
+        label: const Text('New'),
         icon: const Icon(
           Icons.add,
         ));
 
-    final buttons = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [addButton, allButton],
-    );
-
-    final content = Container(
-      decoration: BoxDecoration(
-          color: Theme.of(context).primaryColorLight,
-          borderRadius: BorderRadius.circular(10)),
-      height: 150,
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [title, const SizedBox(height: 12), content, buttons],
+      children: [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [title, addButton]),
+        const AppointmentsListview(),
+      ],
     );
   }
 }

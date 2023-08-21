@@ -1,16 +1,14 @@
-import 'package:doctor_appointment/src/data/auth_repo.dart';
-
-import 'src/domain/user.dart';
-import 'src/presentation/patient_flow/appointments/appointmets_view.dart';
-import 'src/presentation/patient_flow/appointments/doctors_list_screen.dart';
-import 'src/presentation/patient_flow/appointments/make_appointment_screen.dart';
-
-import 'src/presentation/doctor_flow/home_doctor/home_doctor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'src/data/auth_repo.dart';
+import 'src/domain/user.dart';
 import 'src/presentation/auth/login_screen.dart';
+import 'src/presentation/doctor_flow/home_doctor/home_doctor_screen.dart';
+import 'src/presentation/patient_flow/appointments/manage_appointment_screen.dart';
+import 'src/presentation/patient_flow/appointments/doctors_list_screen.dart';
+import 'src/presentation/patient_flow/appointments/make_appointment_screen.dart';
 import 'src/presentation/patient_flow/home_patient/home_patient_screen.dart';
 
 GoRouter _goRouter(ProviderRef<GoRouter> ref) {
@@ -53,15 +51,15 @@ GoRouter _goRouter(ProviderRef<GoRouter> ref) {
                         path: ':doctorId/makeAppointment',
                         builder: (BuildContext context, GoRouterState state) {
                           final doctorId = state.pathParameters['doctorId'];
-                          // final doctor = state.extra as AppUser;
                           return MakeAppointmentScreen(doctorId!);
                         })
                   ]),
               GoRoute(
-                  name: AppointmentsView.routeName,
-                  path: 'appointments',
+                  name: ManageAppointmentScreen.routeName,
+                  path: 'appointment/:appointmentId',
                   builder: (BuildContext context, GoRouterState state) {
-                    return const AppointmentsView();
+                    final appointmentId = state.pathParameters['appointmentId'];
+                    return ManageAppointmentScreen(appointmentId!);
                   })
             ]),
         GoRoute(

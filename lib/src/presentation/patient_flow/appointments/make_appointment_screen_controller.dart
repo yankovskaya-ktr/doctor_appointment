@@ -6,12 +6,14 @@ import 'package:doctor_appointment/src/data/doctor_repo.dart';
 import 'package:doctor_appointment/src/domain/appointment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MakeAppointmentScreenController extends AsyncNotifier<void> {
+import '../../../domain/user.dart';
+
+class MakeAppointmentScreenController extends AutoDisposeAsyncNotifier<void> {
   @override
   FutureOr<void> build() {}
 
   Future<bool> makeAppointment(
-      {required String doctorId, required DateTime start}) async {
+      {required AppUser doctor, required DateTime start}) async {
     final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     if (currentUser != null) {
@@ -20,13 +22,16 @@ class MakeAppointmentScreenController extends AsyncNotifier<void> {
 
       state = const AsyncLoading();
       final appointment = Appointment(
-          doctorId: doctorId,
-          patientId: currentUser.id!,
-          start: start,
-          isApproved: false);
+        doctorId: doctor.id!,
+        doctorName: doctor.name,
+        patientId: currentUser.id!,
+        patientName: currentUser.name,
+        start: start,
+        isApproved: false,
+      );
       state = await AsyncValue.guard(() async {
         appointmentRepo.makeAppointment(appointment: appointment);
-        doctorRepo.deleteTimeSlots(doctorId, [start]);
+        doctorRepo.deleteTimeSlots(doctor.id!, [start]);
       });
     }
     return state.hasError == false;
@@ -34,6 +39,7 @@ class MakeAppointmentScreenController extends AsyncNotifier<void> {
 }
 
 final makeAppointmentScreenControllerProvider =
-    AsyncNotifierProvider<MakeAppointmentScreenController, void>(() {
+    AsyncNotifierProvider.autoDispose<MakeAppointmentScreenController, void>(
+        () {
   return MakeAppointmentScreenController();
 });

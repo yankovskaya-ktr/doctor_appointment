@@ -31,7 +31,6 @@ class DoctorsListScreen extends StatelessWidget {
                     onTap: () => {
                           context.pushNamed(
                             MakeAppointmentScreen.routeName,
-                            // extra: doctor,
                             pathParameters: {'doctorId': doctor.id!},
                           )
                         },

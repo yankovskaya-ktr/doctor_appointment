@@ -7,52 +7,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../components/home_icon_button.dart';
 import '../../../domain/user.dart';
 import '../../../utils/format.dart';
 
-class MakeAppointmentScreen extends StatelessWidget {
+class MakeAppointmentScreen extends ConsumerWidget {
   static const String routeName = 'makeAppointment';
 
-  // final AppUser doctor;
   final String doctorId;
 
   const MakeAppointmentScreen(this.doctorId, {super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    print('=============== start build MakeAppScreen');
+    final doctorAsync = ref.watch(doctorProvider(doctorId));
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Make appointment'),
           centerTitle: true,
+          actions: const [HomeIconButton()],
         ),
-        body: Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          final doctorAsync = ref.watch(doctorProvider(doctorId));
-          return doctorAsync.when(
-            data: (doctor) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  children: [
-                    UserInfo(
-                      name: doctor.name,
-                      specialization: 'Specialization',
-                    ),
-                    const SizedBox(height: 12),
-                    Expanded(child: _TimeSlotsListView(doctor)),
-                  ],
-                )),
-            error: (error, _) => const Text('Error loading doctor data'),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }));
-
-    // Consumer(
-    //   builder: (BuildContext context, WidgetRef ref, Widget? child) {
-    //     return Container();
-    //   },
-    // ));
+        body: doctorAsync.when(
+          data: (doctor) => Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                children: [
+                  UserInfo(
+                    name: doctor.name,
+                    specialization: 'Specialization',
+                  ),
+                  const SizedBox(height: 12),
+                  Expanded(child: _TimeSlotsListView(doctor)),
+                ],
+              )),
+          error: (error, _) => const Text('Error loading doctor data'),
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ));
   }
 }
 
@@ -76,7 +70,7 @@ class _TimeSlotsListView extends ConsumerWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 4),
-              _ButtonsForSlots(dayWithSlots.slots, doctor.id!),
+              _ButtonsForSlots(dayWithSlots.slots, doctor),
             ],
           );
 
@@ -95,8 +89,8 @@ class _TimeSlotsListView extends ConsumerWidget {
 
 class _ButtonsForSlots extends ConsumerWidget {
   final List<DateTime> slots;
-  final String doctorId;
-  const _ButtonsForSlots(this.slots, this.doctorId);
+  final AppUser doctor;
+  const _ButtonsForSlots(this.slots, this.doctor);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -125,7 +119,7 @@ class _ButtonsForSlots extends ConsumerWidget {
                 onPressed: () async {
                   final success = await ref
                       .read(makeAppointmentScreenControllerProvider.notifier)
-                      .makeAppointment(doctorId: doctorId, start: slot);
+                      .makeAppointment(doctor: doctor, start: slot);
 
                   if (context.mounted) {
                     if (success) {
