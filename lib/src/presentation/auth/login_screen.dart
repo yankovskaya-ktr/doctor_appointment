@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/src/data/auth_repo.dart';
 import 'package:doctor_appointment/src/presentation/doctor_flow/home_doctor/home_doctor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -6,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../patient_flow/home_patient/home_patient_screen.dart';
 import '../../domain/user.dart';
-import 'auth_controller.dart';
+import 'login_screen_controller.dart';
 
 class LoginScreen extends ConsumerWidget {
   static const String routeName = 'login';
@@ -70,9 +71,9 @@ class LoginScreen extends ConsumerWidget {
   }
 
   void _onSubmitAnimationCompleted(BuildContext context, WidgetRef ref) {
-    final authController = ref.watch(authControllerProvider);
-    authController.when(
-        data: (appUser) => appUser!.role == UserRole.doctor
+    final currentUser = ref.watch(currentUserProvider);
+    currentUser.when(
+        data: (user) => user!.role == UserRole.doctor
             ? context.goNamed(HomeDoctorScreen.routeName)
             : context.goNamed(HomePatientScreen.routeName),
         error: (_, __) => context.goNamed(LoginScreen.routeName),

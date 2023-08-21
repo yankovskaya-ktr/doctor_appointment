@@ -24,6 +24,12 @@ class DoctorRepository {
     final snapshot = await _usersRef.doc(id).get();
     return snapshot.data()!;
   }
+
+  Future<void> addTimeSlots(String id, List<DateTime> slots) =>
+      _usersRef.doc(id).update({'timeSlots': FieldValue.arrayUnion(slots)});
+
+  Future<void> deleteTimeSlots(String id, List<DateTime> slots) =>
+      _usersRef.doc(id).update({'timeSlots': FieldValue.arrayRemove(slots)});
 }
 
 final doctorRepositoryProvider = Provider<DoctorRepository>((ref) {

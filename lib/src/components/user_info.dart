@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'avatar.dart';
 
-class ProfileHeader extends StatelessWidget {
+class UserInfo extends StatelessWidget {
   final String name;
   final String? specialization;
 
-  const ProfileHeader({super.key, required this.name, this.specialization});
+  const UserInfo({super.key, required this.name, this.specialization});
 
   @override
   Widget build(BuildContext context) {

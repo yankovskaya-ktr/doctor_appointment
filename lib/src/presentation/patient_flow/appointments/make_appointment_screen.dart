@@ -1,9 +1,13 @@
-import 'package:doctor_appointment/src/components/profile_header.dart';
+import 'package:doctor_appointment/src/components/user_info.dart';
 import 'package:doctor_appointment/src/data/doctor_repo.dart';
 import 'package:doctor_appointment/src/domain/daily_slots.dart';
+import 'package:doctor_appointment/src/presentation/patient_flow/appointments/make_appointment_screen_controller.dart';
+import 'package:doctor_appointment/src/presentation/patient_flow/home_patient/home_patient_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../domain/user.dart';
 import '../../../utils/format.dart';
 
 class MakeAppointmentScreen extends StatelessWidget {
@@ -29,12 +33,12 @@ class MakeAppointmentScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Column(
                   children: [
-                    ProfileHeader(
+                    UserInfo(
                       name: doctor.name,
                       specialization: 'Specialization',
                     ),
                     const SizedBox(height: 12),
-                    Expanded(child: _TimeSlotsListView(doctorId)),
+                    Expanded(child: _TimeSlotsListView(doctor)),
                   ],
                 )),
             error: (error, _) => const Text('Error loading doctor data'),
@@ -53,59 +57,46 @@ class MakeAppointmentScreen extends StatelessWidget {
 }
 
 class _TimeSlotsListView extends ConsumerWidget {
-  final String doctorId;
+  final AppUser doctor;
 
-  const _TimeSlotsListView(this.doctorId);
+  const _TimeSlotsListView(this.doctor);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final daysWithSlots = ref.watch(dailyTimeSlotsProvider(doctorId));
+    final daysWithSlots = ref.watch(dailyTimeSlotsProvider(doctor.id!));
     return ListView.builder(
-      itemCount: daysWithSlots.length,
-      itemBuilder: (context, index) {
-        DailyTimeSlots dayWithSlots = daysWithSlots[index];
-        return _DayItem(dayWithSlots);
-      },
-    );
-  }
-}
+        itemCount: daysWithSlots.length,
+        itemBuilder: (context, index) {
+          DailyTimeSlots dayWithSlots = daysWithSlots[index];
+          final content = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                Format.dateAndDayOfWeek(dayWithSlots.day),
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 4),
+              _ButtonsForSlots(dayWithSlots.slots, doctor.id!),
+            ],
+          );
 
-class _DayItem extends StatelessWidget {
-  final DailyTimeSlots dayWithSlots;
-
-  const _DayItem(this.dayWithSlots);
-
-  @override
-  Widget build(BuildContext context) {
-    final day = dayWithSlots.day;
-
-    final content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          Format.dateAndDayOfWeek(day),
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        const SizedBox(height: 4),
-        _ButtonsForSlots(dayWithSlots.slots),
-      ],
-    );
-
-    return Container(
-      decoration: BoxDecoration(
-          // color: Theme.of(context).primaryColorLight,
-          border: Border.all(color: Theme.of(context).primaryColorLight),
-          borderRadius: BorderRadius.circular(10)),
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.only(bottom: 8.0),
-      child: content,
-    );
+          return Container(
+            decoration: BoxDecoration(
+                // color: Theme.of(context).primaryColorLight,
+                border: Border.all(color: Theme.of(context).primaryColorLight),
+                borderRadius: BorderRadius.circular(10)),
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(bottom: 8.0),
+            child: content,
+          );
+        });
   }
 }
 
 class _ButtonsForSlots extends ConsumerWidget {
   final List<DateTime> slots;
-  const _ButtonsForSlots(this.slots);
+  final String doctorId;
+  const _ButtonsForSlots(this.slots, this.doctorId);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -127,12 +118,26 @@ class _ButtonsForSlots extends ConsumerWidget {
             actionsAlignment: MainAxisAlignment.spaceEvenly,
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
+                onPressed: () => Navigator.pop(context),
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.pop(context, 'OK');
+                onPressed: () async {
+                  final success = await ref
+                      .read(makeAppointmentScreenControllerProvider.notifier)
+                      .makeAppointment(doctorId: doctorId, start: slot);
+
+                  if (context.mounted) {
+                    if (success) {
+                      // Navigator.pop(context);
+                      context.goNamed(HomePatientScreen.routeName);
+                    } else {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              'Something went wrong. Please, try again later.')));
+                    }
+                  }
                 },
                 child: const Text('OK'),
               ),
