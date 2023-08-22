@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../components/home_header.dart';
-import '../appointments/doctors_list_screen.dart';
+import '../make_appointment/doctors_list_screen.dart';
 import 'appointments_list.dart';
 
 class HomePatientScreen extends StatelessWidget {
@@ -37,11 +37,10 @@ class _ScheduledAppointments extends StatelessWidget {
         ));
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [title, addButton]),
+        Row(children: [title, addButton]),
         const AppointmentsListview(),
       ],
     );

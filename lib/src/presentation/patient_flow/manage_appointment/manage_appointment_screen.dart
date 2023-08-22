@@ -1,8 +1,8 @@
 import 'package:doctor_appointment/src/components/home_icon_button.dart';
 import 'package:doctor_appointment/src/data/appointment_repo.dart';
 import 'package:doctor_appointment/src/domain/appointment.dart';
-import 'package:doctor_appointment/src/presentation/patient_flow/appointments/make_appointment_screen.dart';
-import 'package:doctor_appointment/src/presentation/patient_flow/appointments/manage_appointment_screen_controller.dart';
+import 'package:doctor_appointment/src/presentation/patient_flow/make_appointment/make_appointment_screen.dart';
+import 'package:doctor_appointment/src/presentation/patient_flow/manage_appointment/manage_appointment_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -50,21 +50,33 @@ class _AppointmentInfo extends StatelessWidget {
       const Icon(Icons.calendar_month),
       const SizedBox(width: 8),
       Text(
-        '${Format.dateAndDayOfWeek(appointment.start)}, ${Format.time(appointment.start)}',
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
+          '${Format.dateAndDayOfWeek(appointment.start)}, ${Format.time(appointment.start)}',
+          style: Theme.of(context).textTheme.titleLarge)
     ]);
 
-    final address = Row(
-      children: [
-        const Icon(Icons.location_on_outlined),
-        const SizedBox(width: 8),
-        Text(
-          'Address',
-          style: Theme.of(context).textTheme.bodyLarge,
-        )
-      ],
-    );
+    final address = Row(children: [
+      const Icon(Icons.location_on_outlined),
+      const SizedBox(width: 8),
+      Text('Address', style: Theme.of(context).textTheme.bodyLarge)
+    ]);
+
+    final approved = appointment.isApproved
+        ? Row(children: [
+            Icon(Icons.check, color: Colors.green[300]),
+            const SizedBox(width: 8),
+            Text('Confirmed by the doctor',
+                style: TextStyle(
+                    color: Colors.green[300],
+                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize))
+          ])
+        : Row(children: [
+            Icon(Icons.warning_amber, color: Colors.amber[600]),
+            const SizedBox(width: 8),
+            Text('Not confirmed by the doctor',
+                style: TextStyle(
+                    color: Colors.amber[600],
+                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize))
+          ]);
 
     return Column(
       children: [
@@ -72,10 +84,12 @@ class _AppointmentInfo extends StatelessWidget {
           name: appointment.doctorName,
           specialization: 'Specialization',
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 24),
         date,
         const SizedBox(height: 8),
         address,
+        const SizedBox(height: 8),
+        approved,
         const SizedBox(height: 24),
         _Buttons(appointment)
       ],

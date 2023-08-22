@@ -1,4 +1,4 @@
-/// Groups together doctors' timeslots on a given day
+/// Groups together  doctors' forthcoming timeslots on a given day
 class DailyTimeSlots {
   final DateTime day;
   final List<DateTime> slots;
@@ -7,7 +7,7 @@ class DailyTimeSlots {
 
   /// Creates a sorted list of DaylyTimeSlots from a list of timeslots
   static List<DailyTimeSlots> getAll(List<DateTime> slots) {
-    final byDate = _slotsByDate(slots);
+    final byDate = _forthcomingSlotsByDate(slots);
     final List<DailyTimeSlots> list = [];
     for (final pair in byDate.entries) {
       final date = pair.key;
@@ -19,15 +19,19 @@ class DailyTimeSlots {
     return list;
   }
 
-  /// Splits timeslots into groups by date
-  static Map<DateTime, List<DateTime>> _slotsByDate(List<DateTime> slots) {
+  /// Choses timeslots after now and splits into groups by date
+  static Map<DateTime, List<DateTime>> _forthcomingSlotsByDate(
+      List<DateTime> slots) {
     final Map<DateTime, List<DateTime>> map = {};
     for (final slot in slots) {
-      final day = DateTime(slot.year, slot.month, slot.day);
-      if (map[day] == null) {
-        map[day] = [slot];
-      } else {
-        map[day]!.add(slot);
+      if (slot.isAfter(DateTime.now()) ||
+          slot.isAtSameMomentAs(DateTime.now())) {
+        final day = DateTime(slot.year, slot.month, slot.day);
+        if (map[day] == null) {
+          map[day] = [slot];
+        } else {
+          map[day]!.add(slot);
+        }
       }
     }
     return map;

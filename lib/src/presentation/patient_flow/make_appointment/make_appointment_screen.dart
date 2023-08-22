@@ -1,7 +1,7 @@
 import 'package:doctor_appointment/src/components/user_info.dart';
 import 'package:doctor_appointment/src/data/doctor_repo.dart';
 import 'package:doctor_appointment/src/domain/daily_slots.dart';
-import 'package:doctor_appointment/src/presentation/patient_flow/appointments/make_appointment_screen_controller.dart';
+import 'package:doctor_appointment/src/presentation/patient_flow/make_appointment/make_appointment_screen_controller.dart';
 import 'package:doctor_appointment/src/presentation/patient_flow/home_patient/home_patient_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

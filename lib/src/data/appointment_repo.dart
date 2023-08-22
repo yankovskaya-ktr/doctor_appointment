@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctor_appointment/src/data/auth_repo.dart';
 import 'package:doctor_appointment/src/domain/appointment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,9 +24,11 @@ class AppointmentRepository {
     return snapshot.data()!;
   }
 
+  /// Get all patient's forthcoming appointments ordered by date
   Query<Appointment> queryAppointmentsForPatient(String patientId) =>
       _appointmentsRef
           .where('patientId', isEqualTo: patientId)
+          .where('start', isGreaterThanOrEqualTo: DateTime.timestamp())
           .orderBy('start');
 
   Future<void> deleteAppointment(String id) =>
@@ -62,7 +63,6 @@ final appointmentProvider =
     return appointmentRepo.getAppointment(appointmentId);
   },
 );
-
 
 // final dailyAppointmentsForPatientProvider = Provider.autoDispose
 //     .family<List<DailyAppointments>, String>((ref, doctorId) {

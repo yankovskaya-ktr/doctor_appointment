@@ -6,9 +6,9 @@ import 'src/data/auth_repo.dart';
 import 'src/domain/user.dart';
 import 'src/presentation/auth/login_screen.dart';
 import 'src/presentation/doctor_flow/home_doctor/home_doctor_screen.dart';
-import 'src/presentation/patient_flow/appointments/manage_appointment_screen.dart';
-import 'src/presentation/patient_flow/appointments/doctors_list_screen.dart';
-import 'src/presentation/patient_flow/appointments/make_appointment_screen.dart';
+import 'src/presentation/patient_flow/manage_appointment/manage_appointment_screen.dart';
+import 'src/presentation/patient_flow/make_appointment/doctors_list_screen.dart';
+import 'src/presentation/patient_flow/make_appointment/make_appointment_screen.dart';
 import 'src/presentation/patient_flow/home_patient/home_patient_screen.dart';
 
 GoRouter _goRouter(ProviderRef<GoRouter> ref) {
