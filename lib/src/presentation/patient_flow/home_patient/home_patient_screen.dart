@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../components/home_header.dart';
+import '../../components/home_header.dart';
 import '../make_appointment/doctors_list_screen.dart';
 import 'appointments_list.dart';
 

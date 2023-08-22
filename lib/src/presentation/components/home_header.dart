@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/auth_repo.dart';
+import '../../data/auth_repo.dart';
 import 'signout_button_controller.dart';
 import 'user_info.dart';
 

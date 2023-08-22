@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/auth_repo.dart';
+import '../../data/auth_repo.dart';
 
 class SignOutButtonController extends AsyncNotifier<void> {
   @override

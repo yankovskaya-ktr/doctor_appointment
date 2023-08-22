@@ -1,6 +1,6 @@
 import 'package:doctor_appointment/src/presentation/doctor_flow/home_doctor/appointments_list.dart';
 import 'package:flutter/material.dart';
-import '../../../components/home_header.dart';
+import '../../components/home_header.dart';
 
 class HomeDoctorScreen extends StatelessWidget {
   static const String routeName = 'homeDoctor';

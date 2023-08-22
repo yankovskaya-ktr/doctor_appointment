@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../domain/user.dart';
-import '../../../components/avatar.dart';
+import '../../components/avatar.dart';
 import '../../../data/doctor_repo.dart';
 import 'make_appointment_screen.dart';
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../components/appointments_placeholder.dart';
+import '../../components/appointments_placeholder.dart';
 import '../../../data/appointment_repo.dart';
 import '../../../data/auth_repo.dart';
 import '../../../domain/appointment.dart';

@@ -1,4 +1,4 @@
-import 'package:doctor_appointment/src/components/user_info.dart';
+import 'package:doctor_appointment/src/presentation/components/user_info.dart';
 import 'package:doctor_appointment/src/data/doctor_repo.dart';
 import 'package:doctor_appointment/src/domain/daily_slots.dart';
 import 'package:doctor_appointment/src/presentation/patient_flow/make_appointment/make_appointment_screen_controller.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../components/home_icon_button.dart';
+import '../../components/home_icon_button.dart';
 import '../../../domain/user.dart';
 import '../../../utils/format.dart';
 

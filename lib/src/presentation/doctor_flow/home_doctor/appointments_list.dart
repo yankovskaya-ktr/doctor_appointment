@@ -3,7 +3,7 @@ import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../components/appointments_placeholder.dart';
+import '../../components/appointments_placeholder.dart';
 import '../../../data/appointment_repo.dart';
 import '../../../data/auth_repo.dart';
 import '../../../domain/appointment.dart';
@@ -76,30 +76,24 @@ class _AppointmentItem extends ConsumerWidget {
           Format.time(appointment.start),
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        // const SizedBox(height: 8),
-        // const Icon(Icons.open_in_new, color: Colors.black54),
       ],
     );
 
-    final confirmButton = OutlinedButton.icon(
-      onPressed: () => ref
-          .read(appointmentsListControllerProvider.notifier)
-          .confirmAppointment(appointment),
-      icon: const Icon(Icons.check),
-      label: Text('Confirm', style: TextStyle(color: Colors.amber[600])),
-      style: ButtonStyle(
-          iconColor: MaterialStatePropertyAll(Colors.amber[600]),
-          side:
-              MaterialStatePropertyAll(BorderSide(color: Colors.amber[600]!))),
-    );
+    final confirmButton = ElevatedButton.icon(
+        onPressed: () => ref
+            .read(appointmentsListControllerProvider.notifier)
+            .confirmAppointment(appointment),
+        icon: const Icon(Icons.check),
+        label: const Text('Confirm'));
 
     final approved = appointment.isApproved
         ? Row(children: [
-            Icon(Icons.check, color: Colors.green[300]),
+            Icon(Icons.check, color: Theme.of(context).primaryColor),
             const SizedBox(width: 4),
             Text('Confirmed',
                 style: TextStyle(
-                    color: Colors.green[300], fontWeight: FontWeight.w500))
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w500))
           ])
         : confirmButton;
 
