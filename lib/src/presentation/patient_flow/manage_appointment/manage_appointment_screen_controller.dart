@@ -22,18 +22,6 @@ class ManageAppointmentScreenController extends AutoDisposeAsyncNotifier<void> {
 
     return state.hasError == false;
   }
-
-  // Future<List<DailyAppointments>> _getDailyAppointmentsForPatient() async {
-  //   final appointmentRepo = ref.watch(appointmentRepositoryProvider);
-  //   final currentUser = ref.watch(currentUserProvider).asData?.value;
-
-  //   if (currentUser != null) {
-  //     return await appointmentRepo
-  //         .queryAppointmentsForPatient(currentUser.id!)
-  //         .then((appointments) => DailyAppointments.getAll(appointments));
-  //   }
-  //   return [];
-  // }
 }
 
 final manageAppointmentsScreenControllerProvider =

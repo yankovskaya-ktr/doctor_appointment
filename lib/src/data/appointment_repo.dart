@@ -24,23 +24,32 @@ class AppointmentRepository {
     return snapshot.data()!;
   }
 
-  /// Get all patient's forthcoming appointments ordered by date
+  Future<void> deleteAppointment(String id) =>
+      _appointmentsRef.doc(id).delete();
+
+  Future<void> confirmAppointment(String id) =>
+      _appointmentsRef.doc(id).update({'isApproved': true});
+
+  /// Get all forthcoming appointments for a petient ordered by date
   Query<Appointment> queryAppointmentsForPatient(String patientId) =>
       _appointmentsRef
           .where('patientId', isEqualTo: patientId)
           .where('start', isGreaterThanOrEqualTo: DateTime.timestamp())
           .orderBy('start');
 
-  Future<void> deleteAppointment(String id) =>
-      _appointmentsRef.doc(id).delete();
+  /// Get all forthcoming appointments for a doctor ordered by date
+  Query<Appointment> queryAppointmentsForDoctor(String doctorId) =>
+      _appointmentsRef
+          .where('doctorId', isEqualTo: doctorId)
+          .where('start', isGreaterThanOrEqualTo: DateTime.timestamp())
+          .orderBy('start');
+
   // Future<List<Appointment>> queryAppointmentsForPatient(
   //     String patientId) async {
   //   final snapshots =
   //       await _appointmentsRef.where('patientId', isEqualTo: patientId).get();
   //   return snapshots.docs.map((doc) => doc.data()).toList();
   // }
-
-  // cancel appointment
 
   // approve appointment
 }
@@ -54,6 +63,12 @@ final appointmentsForPatientQueryProvider =
     Provider.autoDispose.family<Query<Appointment>, String>((ref, patientId) {
   final appointmentRepo = ref.watch(appointmentRepositoryProvider);
   return appointmentRepo.queryAppointmentsForPatient(patientId);
+});
+
+final appointmentsForDoctorQueryProvider =
+    Provider.autoDispose.family<Query<Appointment>, String>((ref, doctorId) {
+  final appointmentRepo = ref.watch(appointmentRepositoryProvider);
+  return appointmentRepo.queryAppointmentsForDoctor(doctorId);
 });
 
 final appointmentProvider =

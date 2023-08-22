@@ -41,7 +41,7 @@ class _ScheduledAppointments extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(children: [title, addButton]),
-        const AppointmentsListview(),
+        const AppointmentsListviewForPatient(),
       ],
     );
   }

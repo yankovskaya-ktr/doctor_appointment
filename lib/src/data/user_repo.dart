@@ -42,10 +42,6 @@ class UserRepository {
     // }
     return snapshot.data()!;
   }
-
-  Future<void> _addTimeSlots(String id, List<DateTime> slots) async {
-    _usersRef.doc(id).update({'timeSlots': FieldValue.arrayUnion(slots)});
-  }
 }
 
 final userRepositoryProvider = Provider<UserRepository>((ref) {

@@ -11,7 +11,7 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      const Avatar(),
+      const AvatarDefault(),
       const SizedBox(width: 12),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
