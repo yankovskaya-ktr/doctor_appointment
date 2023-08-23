@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'firebase_options.dart';
 import 'provider_logger.dart';
 import 'router.dart';
+import 'src/data/auth_repo.dart';
+import 'src/data/user_repo.dart';
 
 final firestoreProvider =
     Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
@@ -19,7 +21,7 @@ Future<void> main() async {
   );
 
   // Firebase Cloud Messaging initialization
-  await NotificationsService.registerNotifications();
+  await NotificationsService.init();
 
   runApp(
     ProviderScope(
@@ -34,8 +36,15 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final goRouter = ref.watch(goRouterProvider);
+    final currentUser = ref.watch(currentUserProvider).asData?.value;
+    final fcmToken = ref.watch(fCMTokenProvider).asData?.value;
+    final userRepo = ref.watch(userRepositoryProvider);
+    // send user's token for notifications to firestore
+    if (currentUser != null && fcmToken != null) {
+      userRepo.addFCMToken(currentUser.id!, fcmToken);
+    }
 
+    final goRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
         routerConfig: goRouter,
         theme: ThemeData(
@@ -54,6 +63,4 @@ class MyApp extends ConsumerWidget {
           ),
         ));
   }
-
-  // This widget is the root of your application.
 }

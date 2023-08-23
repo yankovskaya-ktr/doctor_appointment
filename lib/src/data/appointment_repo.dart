@@ -16,8 +16,10 @@ class AppointmentRepository {
             toFirestore: (appointment, _) => appointment.toMap(),
           );
 
-  Future<void> makeAppointment({required Appointment appointment}) =>
-      _appointmentsRef.add(appointment);
+  Future<String> makeAppointment({required Appointment appointment}) async {
+    final doc = await _appointmentsRef.add(appointment);
+    return doc.id;
+  }
 
   Future<Appointment> getAppointment(String id) async {
     final snapshot = await _appointmentsRef.doc(id).get();

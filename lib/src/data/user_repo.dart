@@ -19,28 +19,20 @@ class UserRepository {
   Future<void> createAppUser(String id, String email, UserRole role) async {
     // hard-code default name of a new user
     AppUser user = AppUser(email: email, role: role, name: 'John Doe');
-    // try {
     _usersRef.doc(id).set(user);
-    // Set default time slots
-    // if (role == UserRole.doctor) {
-    //   _addTimeSlots(id, AppUser.getDefaultTimeSlots());
-    // }
-    //   return null;
-    // } catch (e) {
-    //   return e.toString();
-    // }
   }
 
   Future<AppUser> getUserProfile(String id) async {
-    // try {
     final snapshot = await _usersRef.doc(id).get();
-    // if (snapshot.exists) {
     print('============ got user ${snapshot.data()!}');
-    // }
-    // } catch (e) {
-    //   print('Error getting user profile $id : $e');
-    // }
     return snapshot.data()!;
+  }
+
+  // add token for notifications
+  Future<void> addFCMToken(String id, String token) async {
+    _usersRef.doc(id).update({
+      'notificationTokens': FieldValue.arrayUnion([token])
+    });
   }
 }
 

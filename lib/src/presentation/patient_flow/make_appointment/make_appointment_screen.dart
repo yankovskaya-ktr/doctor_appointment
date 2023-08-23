@@ -117,9 +117,15 @@ class _ButtonsForSlots extends ConsumerWidget {
               ),
               TextButton(
                 onPressed: () async {
+                  // listen for the provider until the future is complete: workaround to prevent exception "Future already completed"
+                  // on updating provider's state after the provider is disposed (see discussion https://github.com/rrousselGit/riverpod/discussions/2502 )
+                  final tempSubscription = ref.listenManual(
+                      makeAppointmentScreenControllerProvider.notifier,
+                      (_, __) {});
                   final success = await ref
                       .read(makeAppointmentScreenControllerProvider.notifier)
                       .makeAppointment(doctor: doctor, start: slot);
+                  tempSubscription.close();
 
                   if (context.mounted) {
                     if (success) {

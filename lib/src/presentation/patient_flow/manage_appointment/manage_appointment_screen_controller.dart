@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:doctor_appointment/src/domain/appointment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../application/notification_service.dart';
 import '../../../data/appointment_repo.dart';
 import '../../../data/doctor_repo.dart';
 
@@ -18,10 +19,14 @@ class ManageAppointmentScreenController extends AutoDisposeAsyncNotifier<void> {
     state = await AsyncValue.guard(() async {
       appointmentRepo.deleteAppointment(appointment.id!);
       doctorRepo.addTimeSlots(appointment.doctorId, [appointment.start]);
+      _cancelReminder(appointment.id!);
     });
 
     return state.hasError == false;
   }
+
+  Future<void> _cancelReminder(String id) =>
+      NotificationsService.cancelNotification(id.hashCode);
 }
 
 final manageAppointmentsScreenControllerProvider =

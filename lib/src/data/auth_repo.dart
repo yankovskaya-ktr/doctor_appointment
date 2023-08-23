@@ -39,7 +39,6 @@ final firebaseAuthProvider =
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final auth = ref.watch(firebaseAuthProvider);
-  // final userRepo = ref.watch(userRepositoryProvider);
   return AuthRepository(auth); //, userRepo);
 });
 
@@ -48,13 +47,12 @@ final authStateChangesProvider = StreamProvider<User?>(
 
 final currentUserProvider = FutureProvider<AppUser?>((ref) async {
   print('=========== currentUserProvider rebuild started');
-
-  final authState = ref.watch(authStateChangesProvider);
+  final authenticatedUser = ref.watch(authStateChangesProvider).asData?.value;
   final userRepo = ref.watch(userRepositoryProvider);
-  if (authState.asData?.value?.uid != null) {
+  if (authenticatedUser != null) {
     print(
-        '============ authState.asData?.value?.uid = ${authState.asData?.value?.uid}');
-    return userRepo.getUserProfile(authState.asData!.value!.uid);
+        '============ authState.asData?.value?.uid = ${authenticatedUser.uid}');
+    return userRepo.getUserProfile(authenticatedUser.uid);
   }
   return null;
 });
