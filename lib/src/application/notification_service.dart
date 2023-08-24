@@ -23,6 +23,8 @@ class NotificationsService {
     if (permission == AuthorizationStatus.authorized) {
       // handle foreground notifications
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print(
+            '==========  got foreground message notification ${message.notification?.body}');
         showNotification(
           message.notification?.title,
           message.notification?.body,
@@ -36,6 +38,8 @@ class NotificationsService {
   @pragma('vm:entry-point')
   static Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
+    print(
+        '==========  got backgroung message notification ${message.notification?.body}');
     await showNotification(
       message.notification?.title,
       message.notification?.body,
@@ -101,7 +105,7 @@ class NotificationsService {
     iOS: _darwinNotificationDetails,
   );
 
-  /// Show flutter_local_notifications notification
+  /// Show flutter_local_notifications
   static Future<void> showNotification(
     String? title,
     String? body,
