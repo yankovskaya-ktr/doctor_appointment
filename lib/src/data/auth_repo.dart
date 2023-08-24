@@ -46,12 +46,9 @@ final authStateChangesProvider = StreamProvider<User?>(
     (ref) => ref.watch(firebaseAuthProvider).authStateChanges());
 
 final currentUserProvider = FutureProvider<AppUser?>((ref) async {
-  print('=========== currentUserProvider rebuild started');
   final authenticatedUser = ref.watch(authStateChangesProvider).asData?.value;
   final userRepo = ref.watch(userRepositoryProvider);
   if (authenticatedUser != null) {
-    print(
-        '============ authState.asData?.value?.uid = ${authenticatedUser.uid}');
     return userRepo.getUserProfile(authenticatedUser.uid);
   }
   return null;

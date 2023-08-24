@@ -19,12 +19,6 @@ class AppointmentsListviewForPatient extends ConsumerWidget {
     final appointmentsQuery =
         ref.watch(appointmentsForPatientQueryProvider(currentUser!.id!));
 
-    // return _CustomPlaceholder(
-    //     child: Text(
-    //   'You have no scheduled appointments.',
-    //   style: Theme.of(context).textTheme.labelMedium,
-    // ));
-
     return SizedBox(
       height: MediaQuery.of(context).size.height -
           MediaQuery.of(context).viewPadding.bottom -
@@ -60,32 +54,6 @@ class AppointmentsListviewForPatient extends ConsumerWidget {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context, WidgetRef ref) {
-  //   final appointments = ref.watch(appointmentsListControllerProvider);
-  //   return appointments.when(
-  //       data: (daysWithAppointments) => daysWithAppointments.isEmpty
-  //           ? _CustomPlaceholder(
-  //               child: Text(
-  //               'You have no upkoming appointments',
-  //               style: Theme.of(context).textTheme.labelMedium,
-  //             ))
-  //           : Expanded(
-  //               child: ListView.builder(
-  //                   itemCount: daysWithAppointments.length,
-  //                   itemBuilder: (context, index) {
-  //                     final dayWithAppointments = daysWithAppointments[index];
-  //                     return _DayWithAppointmentsItem(dayWithAppointments);
-  //                   })),
-  //       error: (_, __) => _CustomPlaceholder(
-  //               child: Text(
-  //             'Error loading appointments.\nPlease come back later.',
-  //             style: Theme.of(context).textTheme.labelMedium,
-  //           )),
-  //       loading: () =>
-  //           const _CustomPlaceholder(child: CircularProgressIndicator()));
-  // }
 }
 
 class _AppointmentItem extends StatelessWidget {

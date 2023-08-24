@@ -14,8 +14,10 @@ class MakeAppointmentScreenController extends AutoDisposeAsyncNotifier<void> {
   @override
   FutureOr<void> build() {}
 
-  Future<bool> makeAppointment(
+  Future<String?> makeAppointment(
       {required AppUser doctor, required DateTime start}) async {
+    String? newAppointmentId;
+
     final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     if (currentUser != null) {
@@ -32,14 +34,16 @@ class MakeAppointmentScreenController extends AutoDisposeAsyncNotifier<void> {
         isApproved: false,
       );
       state = await AsyncValue.guard(() async {
-        final appointmentId =
+        newAppointmentId =
             await appointmentRepo.makeAppointment(appointment: appointment);
-        // schedule notification for this appointment
-        _scheduleReminder(appointmentId, doctor.name, start);
+        // schedule notification for this appointment, if it is more than 1 day ahead of now
+        if (appointment.start.difference(DateTime.now()).inDays > 1) {
+          _scheduleReminder(newAppointmentId!, doctor.name, start);
+        }
         doctorRepo.deleteTimeSlots(doctor.id!, [start]);
       });
     }
-    return state.hasError == false;
+    return newAppointmentId;
   }
 
   Future<void> _scheduleReminder(

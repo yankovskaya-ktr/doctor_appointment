@@ -45,15 +45,6 @@ class AppointmentRepository {
           .where('doctorId', isEqualTo: doctorId)
           .where('start', isGreaterThanOrEqualTo: DateTime.timestamp())
           .orderBy('start');
-
-  // Future<List<Appointment>> queryAppointmentsForPatient(
-  //     String patientId) async {
-  //   final snapshots =
-  //       await _appointmentsRef.where('patientId', isEqualTo: patientId).get();
-  //   return snapshots.docs.map((doc) => doc.data()).toList();
-  // }
-
-  // approve appointment
 }
 
 final appointmentRepositoryProvider = Provider<AppointmentRepository>((ref) {
@@ -80,18 +71,3 @@ final appointmentProvider =
     return appointmentRepo.getAppointment(appointmentId);
   },
 );
-
-// final dailyAppointmentsForPatientProvider = Provider.autoDispose
-//     .family<List<DailyAppointments>, String>((ref, doctorId) {
-//   final appointmentRepo = ref.watch(appointmentRepositoryProvider);
-//   final currentUser = ref.watch(currentUserProvider).asData?.value;
-//   if (currentUser != null) {
-//     final appointments =
-//         appointmentRepo.queryAppointmentsForPatient(currentUser.id!);
-//   }
-//   final doctor = ref.watch(doctorProvider(doctorId));
-//   if (doctor.asData != null) {
-//     return DailyAppointments.getAll(doctor.asData!.value.timeSlots!);
-//   }
-//   return [];
-// });

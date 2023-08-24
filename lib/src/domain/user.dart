@@ -17,14 +17,6 @@ class AppUser {
     this.timeSlots,
   });
 
-  // factory UserProfile.fromDocumentSnapshot(
-  //         DocumentSnapshot<Map<String, dynamic>> doc) =>
-  //     UserProfile(
-  //       id: doc.id,
-  //       email: doc.data()!['email'],
-  //       role: doc.data()!['role'],
-  //     );
-
   factory AppUser.fromMap(Map<dynamic, dynamic> map, String id) {
     return AppUser(
       id: id,
@@ -33,7 +25,6 @@ class AppUser {
       role: UserRole.values.byName(map['role']),
       timeSlots: map['timeSlots'] is Iterable
           ? [for (Timestamp time in map['timeSlots']) time.toDate()]
-          // ? map['timeSlots'].map<DateTime>((value) => value.toDate()).toList()
           : [],
     );
   }

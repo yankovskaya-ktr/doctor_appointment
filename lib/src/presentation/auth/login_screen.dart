@@ -70,7 +70,7 @@ class LoginScreen extends ConsumerWidget {
     return null;
   }
 
-  void _onSubmitAnimationCompleted(BuildContext context, WidgetRef ref) {
+  void _onSubmitAnimationCompleted(BuildContext context, WidgetRef ref) async {
     final currentUser = ref.watch(currentUserProvider);
     currentUser.when(
         data: (user) => user!.role == UserRole.doctor

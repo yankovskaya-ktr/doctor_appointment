@@ -1,15 +1,15 @@
-import 'package:doctor_appointment/src/presentation/components/user_info.dart';
-import 'package:doctor_appointment/src/data/doctor_repo.dart';
-import 'package:doctor_appointment/src/domain/daily_slots.dart';
-import 'package:doctor_appointment/src/presentation/patient_flow/make_appointment/make_appointment_screen_controller.dart';
-import 'package:doctor_appointment/src/presentation/patient_flow/home_patient/home_patient_screen.dart';
+import 'make_appointment_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../components/home_icon_button.dart';
+import '../../../data/doctor_repo.dart';
+import '../../../domain/daily_slots.dart';
 import '../../../domain/user.dart';
 import '../../../utils/format.dart';
+import '../../components/home_icon_button.dart';
+import '../../components/user_info.dart';
+import '../manage_appointment/manage_appointment_screen.dart';
 
 class MakeAppointmentScreen extends ConsumerWidget {
   static const String routeName = 'makeAppointment';
@@ -20,7 +20,6 @@ class MakeAppointmentScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('=============== start build MakeAppScreen');
     final doctorAsync = ref.watch(doctorProvider(doctorId));
 
     return Scaffold(
@@ -76,7 +75,6 @@ class _TimeSlotsListView extends ConsumerWidget {
 
           return Container(
             decoration: BoxDecoration(
-                // color: Theme.of(context).primaryColorLight,
                 border: Border.all(color: Theme.of(context).primaryColorLight),
                 borderRadius: BorderRadius.circular(10)),
             padding: const EdgeInsets.all(8),
@@ -122,15 +120,17 @@ class _ButtonsForSlots extends ConsumerWidget {
                   final tempSubscription = ref.listenManual(
                       makeAppointmentScreenControllerProvider.notifier,
                       (_, __) {});
-                  final success = await ref
+                  final newAppointmentId = await ref
                       .read(makeAppointmentScreenControllerProvider.notifier)
                       .makeAppointment(doctor: doctor, start: slot);
                   tempSubscription.close();
 
                   if (context.mounted) {
-                    if (success) {
-                      // Navigator.pop(context);
-                      context.goNamed(HomePatientScreen.routeName);
+                    if (newAppointmentId != null) {
+                      context.goNamed(
+                        ManageAppointmentScreen.routeName,
+                        pathParameters: {'appointmentId': newAppointmentId},
+                      );
                     } else {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

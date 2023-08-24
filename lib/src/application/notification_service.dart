@@ -145,11 +145,3 @@ class NotificationsService {
 final fCMTokenProvider = FutureProvider<String?>((ref) async {
   return NotificationsService._getFCMToken();
 });
-
-// final firebaseMessagingProvider =
-//     Provider<FirebaseMessaging>((ref) => FirebaseMessaging.instance);
-
-// final notificationsServiceProvider = Provider<NotificationsService>((ref) {
-//   final messaging = ref.watch(firebaseMessagingProvider);
-//   return NotificationsService(messaging);
-// });

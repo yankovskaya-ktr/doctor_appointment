@@ -57,14 +57,6 @@ class _DoctorItem extends StatelessWidget {
     final info = Text('Specialization\nAddress',
         style: Theme.of(context).textTheme.labelLarge);
 
-    // final price = Text(
-    //   '60 \$',
-    //   style: TextStyle(
-    //       fontSize: 16,
-    //       fontWeight: FontWeight.bold,
-    //       color: Theme.of(context).primaryColorDark),
-    // );
-
     const arrowIcon = Icon(Icons.arrow_forward_ios);
 
     final content = Row(
@@ -83,7 +75,6 @@ class _DoctorItem extends StatelessWidget {
       decoration: BoxDecoration(
           color: Theme.of(context).primaryColorLight,
           borderRadius: BorderRadius.circular(10)),
-      // height: 150,
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 4),
       child: Row(

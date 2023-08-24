@@ -18,12 +18,6 @@ class AppointmentsListviewForDoctor extends ConsumerWidget {
     final appointmentsQuery =
         ref.watch(appointmentsForDoctorQueryProvider(currentUser!.id!));
 
-    // return _CustomPlaceholder(
-    //     child: Text(
-    //   'You have no scheduled appointments.',
-    //   style: Theme.of(context).textTheme.labelMedium,
-    // ));
-
     return SizedBox(
       height: MediaQuery.of(context).size.height -
           MediaQuery.of(context).viewPadding.bottom -

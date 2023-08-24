@@ -16,9 +16,11 @@ class AppointmentsListController extends AutoDisposeAsyncNotifier<void> {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       appointmentRepo.confirmAppointment(appointment.id!);
-      // schedule notification for this appointment
-      _scheduleReminder(
-          appointment.id!, appointment.patientName, appointment.start);
+      // schedule notification for this appointment, if it is more than 1 day ahead of now
+      if (appointment.start.difference(DateTime.now()).inDays > 1) {
+        _scheduleReminder(
+            appointment.id!, appointment.patientName, appointment.start);
+      }
     });
 
     return state.hasError == false;

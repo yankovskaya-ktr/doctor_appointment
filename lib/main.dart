@@ -53,9 +53,7 @@ class MyApp extends ConsumerWidget {
           appBarTheme: AppBarTheme(
               centerTitle: true,
               titleTextStyle: TextStyle(
-                  fontSize: 18,
-                  color: Theme.of(context)
-                      .primaryColorDark)), // Theme.of(context).textTheme.titleLarge),
+                  fontSize: 18, color: Theme.of(context).primaryColorDark)),
           textTheme: const TextTheme(
             labelLarge: TextStyle(color: Colors.black54),
             labelMedium: TextStyle(color: Colors.black54),
