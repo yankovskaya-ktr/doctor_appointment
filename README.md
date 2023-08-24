@@ -18,6 +18,7 @@ Appointment scheduling module for an application connecting doctors with their p
 
 ![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/01439027-666f-4448-86bd-3f460b202e9a)
 ![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/17c6554e-4033-46d5-8d3b-a46ce1b521e3)
+![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/13ccce17-9e91-4990-b555-8d36b9bd63ea)
 
 
 
