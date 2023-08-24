@@ -16,11 +16,9 @@ Appointment scheduling module for an application connecting doctors with their p
 - Patient an Doctor get a reminder 1 day before scheduled appointment
 - Doctor gets a push notification about new appointment
 
-![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/01439027-666f-4448-86bd-3f460b202e9a)
-![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/17c6554e-4033-46d5-8d3b-a46ce1b521e3)
-![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/13ccce17-9e91-4990-b555-8d36b9bd63ea)
-
-
+![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/6990b935-7a18-4a20-ab06-42bd999ef5e3)
+![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/0baff314-2ffe-4f46-a7d2-03d8a01f91b3)
+![image](https://github.com/yankovskaya-ktr/doctor_appointment/assets/82261797/203c3878-bbc8-441a-8ea2-260ba138d557)
 
 
 ## Technologies:
